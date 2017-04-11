@@ -156,7 +156,7 @@ Q_statistic <- function(real_value, predict_1, predict_2)
 # we use the BLDE-RS-KNN to study the Australia credit data from UCI machine learning dataset
 
 # model data
-data <- read.table('C:/Users/Administrator/Desktop/BLDE_RS_KNN/Australia.txt', sep=' ')
+data <- read.table('Australia.txt', sep=' ')
 data <- data.frame(data[,-15], y=data[,15])
 data_train <- data[1:345, ]
 data_validate <- data[346:551, ]
