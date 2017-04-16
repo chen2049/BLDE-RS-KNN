@@ -156,7 +156,7 @@ Q_statistic <- function(real_value, predict_1, predict_2)
 # we use the BLDE-RS-KNN to study the Australia credit data from UCI machine learning dataset
 
 # model data
-data <- read.table('Australia.txt', sep=' ')
+data <- read.table('/Australia.txt', sep=' ')
 data <- data.frame(data[,-15], y=data[,15])
 data_train <- data[1:345, ]
 data_validate <- data[346:551, ]
@@ -215,9 +215,9 @@ for(n in 1:matrix_ncol){
     # prediction of RS-KNN
     R_validate_accuracy_matrix[m, n] <- validate_accuracy(rep(1, 60))
     R_te <- test_accuracy(rep(1, 60))
-    R_test_accuracy_matrix[m, n] <- S_te[1]
-    R_test_type_1_matrix[m, n] <- S_te[2]
-    R_test_type_2_matrix[m, n] <- S_te[3]
+    R_test_accuracy_matrix[m, n] <- R_te[1]
+    R_test_type_1_matrix[m, n] <- R_te[2]
+    R_test_type_2_matrix[m, n] <- R_te[3]
     R_validate_auc_matrix[m, n] <- validate_auc(rep(1, 60))
     R_test_auc_matrix[m, n] <- test_auc(rep(1, 60))
     
