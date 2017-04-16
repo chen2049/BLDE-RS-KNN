@@ -169,13 +169,13 @@ matrix_nrow <- length(k_set)
 
 
 # RS-KNN
-S_validate_accuracy_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
-S_validate_auc_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
+R_validate_accuracy_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
+R_validate_auc_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
 
-S_test_accuracy_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
-S_test_type_1_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
-S_test_type_2_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
-S_test_auc_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
+R_test_accuracy_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
+R_test_type_1_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
+R_test_type_2_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
+R_test_auc_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
 
 # BLDE-RS-KNN
 B_validate_accuracy_matrix <- matrix(NA, matrix_nrow, matrix_ncol)
@@ -213,19 +213,21 @@ for(n in 1:matrix_ncol){
     test_result <- class_pool(data_train, data_validate, data_test, sub_col=sub_col, nresample=nresample, K=K)[552:690, ]
     
     # prediction of RS-KNN
-    S_validate_accuracy_matrix[m, n] <- validate_accuracy(rep(1, 60))
-    S_test_accuracy_matrix[m, n] <- test_accuracy(rep(1, 60))[1]
-    S_test_type_1_matrix[m, n] <- test_accuracy(rep(1, 60))[2]
-    S_test_type_2_matrix[m, n] <- test_accuracy(rep(1, 60))[3]
-    S_validate_auc_matrix[m, n] <- validate_auc(rep(1, 60))
-    S_test_auc_matrix[m, n] <- test_auc(rep(1, 60))
+    R_validate_accuracy_matrix[m, n] <- validate_accuracy(rep(1, 60))
+    R_te <- test_accuracy(rep(1, 60))
+    R_test_accuracy_matrix[m, n] <- S_te[1]
+    R_test_type_1_matrix[m, n] <- S_te[2]
+    R_test_type_2_matrix[m, n] <- S_te[3]
+    R_validate_auc_matrix[m, n] <- validate_auc(rep(1, 60))
+    R_test_auc_matrix[m, n] <- test_auc(rep(1, 60))
     
     # prediction of BLDE-RS-KNN
     optimize_vector <- BLDE_AG(30, 60, 200, 0.05, validate_accuracy)
     B_validate_accuracy_matrix[m, n] <- validate_accuracy(optimize_vector)
-    B_test_accuracy_matrix[m, n] <- test_accuracy(optimize_vector)[1]
-    B_test_type_1_matrix[m, n] <- test_accuracy(optimize_vector)[2]
-    B_test_type_2_matrix[m, n] <- test_accuracy(optimize_vector)[3]
+    B_te <- test_accuracy(optimize_vector)
+    B_test_accuracy_matrix[m, n] <- B_te[1]
+    B_test_type_1_matrix[m, n] <- B_te[2]
+    B_test_type_2_matrix[m, n] <- B_te[3]
     B_validate_auc_matrix[m, n] <- validate_auc(optimize_vector)
     B_test_auc_matrix[m, n] <- test_auc(optimize_vector)
     
@@ -244,12 +246,12 @@ print(End_time - Start_time)
 
 
 # savefile
-write.table(round(S_validate_accuracy_matrix, 4), file='S_validate_accuracy_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
-write.table(round(S_validate_auc_matrix, 4), file='S_validate_auc_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
-write.table(round(S_test_accuracy_matrix, 4) , file='S_test_accuracy_matrix .csv', sep=',', row.names=F, col.names=F, quote=FALSE)
-write.table(round(S_test_type_1_matrix, 4), file='S_test_type_1_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
-write.table(round(S_test_type_2_matrix, 4), file='S_test_type_2_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
-write.table(round(S_test_auc_matrix, 4), file='S_test_auc_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
+write.table(round(R_validate_accuracy_matrix, 4), file='S_validate_accuracy_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
+write.table(round(R_validate_auc_matrix, 4), file='S_validate_auc_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
+write.table(round(R_test_accuracy_matrix, 4) , file='S_test_accuracy_matrix .csv', sep=',', row.names=F, col.names=F, quote=FALSE)
+write.table(round(R_test_type_1_matrix, 4), file='S_test_type_1_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
+write.table(round(R_test_type_2_matrix, 4), file='S_test_type_2_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
+write.table(round(R_test_auc_matrix, 4), file='S_test_auc_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
 write.table(round(B_validate_accuracy_matrix, 4), file='B_validate_accuracy_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
 write.table(round(B_validate_auc_matrix, 4), file='B_validate_auc_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
 write.table(round(B_test_accuracy_matrix, 4), file='B_test_accuracy_matrix.csv', sep=',', row.names=F, col.names=F, quote=FALSE)
